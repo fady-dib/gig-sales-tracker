@@ -56,11 +56,11 @@ export default function GigsPage() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6 md:mb-8">
           <div>
-            <h1 className="text-3xl font-bold" style={{ color: 'var(--text)' }}>
+            <h1 className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--text)' }}>
               My Gigs
             </h1>
             <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>

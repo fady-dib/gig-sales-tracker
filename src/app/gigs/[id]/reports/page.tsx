@@ -157,20 +157,20 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 md:p-8">
+      <div className="flex items-center justify-between mb-5 md:mb-8">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Reports</h1>
+          <h1 className="text-xl md:text-2xl font-bold" style={{ color: 'var(--text)' }}>Reports</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Full breakdown of your gig revenue</p>
         </div>
         <button
           onClick={exportCSV}
           disabled={transactions.length === 0}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm disabled:opacity-40"
+          className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-xl font-semibold text-sm disabled:opacity-40"
           style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)' }}
         >
           <Download size={16} />
-          Export CSV
+          <span className="hidden sm:inline">Export CSV</span>
         </button>
       </div>
 

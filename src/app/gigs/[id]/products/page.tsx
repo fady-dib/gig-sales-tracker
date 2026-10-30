@@ -105,19 +105,20 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 md:p-8">
+      <div className="flex items-center justify-between mb-5 md:mb-8">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Products</h1>
+          <h1 className="text-xl md:text-2xl font-bold" style={{ color: 'var(--text)' }}>Products</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Manage your bar menu items</p>
         </div>
         <button
           onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(defaultForm) }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm"
+          className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-xl font-semibold text-sm"
           style={{ background: 'var(--accent)', color: '#fff' }}
         >
           <Plus size={16} />
-          Add Product
+          <span className="hidden sm:inline">Add Product</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 
@@ -201,7 +202,8 @@ export default function ProductsPage() {
 
       {/* Table */}
       <div className="rounded-xl overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[480px]">
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
               {['Name', 'Category', 'Price', 'Actions'].map((h) => (
@@ -346,6 +348,7 @@ export default function ProductsPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   )

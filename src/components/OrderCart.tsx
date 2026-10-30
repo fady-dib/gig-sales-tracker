@@ -16,6 +16,7 @@ interface OrderCartProps {
   onCheckout: () => void
   loading: boolean
   success: boolean
+  hideHeader?: boolean
 }
 
 const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
@@ -27,15 +28,16 @@ export default function OrderCart({
   onCheckout,
   loading,
   success,
+  hideHeader,
 }: OrderCartProps) {
   const total = items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0)
 
   return (
     <div
       className="flex flex-col h-full rounded-xl"
-      style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+      style={{ background: 'var(--surface)', border: hideHeader ? 'none' : '1px solid var(--border)' }}
     >
-      <div
+      {!hideHeader && <div
         className="flex items-center gap-2 px-5 py-4"
         style={{ borderBottom: '1px solid var(--border)' }}
       >
@@ -51,7 +53,7 @@ export default function OrderCart({
             {items.reduce((s, i) => s + i.quantity, 0)}
           </span>
         )}
-      </div>
+      </div>}
 
       <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-2">
         {items.length === 0 ? (

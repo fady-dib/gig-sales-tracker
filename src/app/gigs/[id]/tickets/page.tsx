@@ -83,9 +83,9 @@ export default function TicketsPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Ticket Sales</h1>
+    <div className="p-4 md:p-8">
+      <div className="mb-5 md:mb-8">
+        <h1 className="text-xl md:text-2xl font-bold" style={{ color: 'var(--text)' }}>Ticket Sales</h1>
         <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Track ticket sales for this gig</p>
       </div>
 
@@ -122,8 +122,8 @@ export default function TicketsPage() {
             {error}
           </div>
         )}
-        <form onSubmit={handleAdd} className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div className="flex flex-col gap-1.5 sm:col-span-2">
+        <form onSubmit={handleAdd} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="flex flex-col gap-1.5 col-span-2 sm:col-span-2">
             <label className="text-xs font-medium" style={{ color: 'var(--muted)' }}>Ticket Type *</label>
             <input
               type="text"
@@ -191,7 +191,8 @@ export default function TicketsPage() {
 
       {/* Table */}
       <div className="rounded-xl overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[600px]">
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
               {['Type', 'Price', 'Qty', 'Total', 'Date', 'Notes', ''].map((h) => (
@@ -276,6 +277,7 @@ export default function TicketsPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   )

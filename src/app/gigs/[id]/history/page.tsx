@@ -67,7 +67,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Sales History</h1>
         <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
