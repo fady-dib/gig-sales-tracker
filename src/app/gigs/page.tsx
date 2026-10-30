@@ -64,7 +64,7 @@ export default function GigsPage() {
               My Gigs
             </h1>
             <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
-              Manage your DJ gigs and track bar sales
+              Manage your gigs and track bar sales
             </p>
           </div>
           <div className="flex items-center gap-3">

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DJ Gig Bar Tracker",
+  title: "Gig Bar Tracker",
   description: "Track bar sales and ticket revenue for your gigs",
 };
 

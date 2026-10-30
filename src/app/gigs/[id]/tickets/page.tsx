@@ -9,7 +9,7 @@ import { format } from 'date-fns'
 
 const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
-const TICKET_SUGGESTIONS = ['General Admission', 'VIP', 'Early Bird', 'Student', 'Group']
+const TICKET_SUGGESTIONS = ['General Admission', 'VIP', 'Early Bird', 'Group']
 
 interface TicketForm {
   ticket_type: string
