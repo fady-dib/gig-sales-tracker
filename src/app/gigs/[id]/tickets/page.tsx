@@ -7,7 +7,7 @@ import { TicketType, TicketSale } from '@/lib/types'
 import { Plus, Pencil, Trash2, X, Check, Minus, Ticket } from 'lucide-react'
 import { format } from 'date-fns'
 
-const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
 
 interface CartItem {
   typeId: string
@@ -37,7 +37,9 @@ export default function TicketsPage() {
   const [editingType, setEditingType] = useState<TicketType | null>(null)
   const [typeForm, setTypeForm] = useState({ name: '', price: '' })
   const [savingType, setSavingType] = useState(false)
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
+  const [deleteTypeConfirm, setDeleteTypeConfirm] = useState<string | null>(null)
+  const [deleteSaleConfirm, setDeleteSaleConfirm] = useState<string | null>(null)
+  const [historyFilter, setHistoryFilter] = useState('all')
 
   const fetchAll = useCallback(async () => {
     setLoading(true)
@@ -134,13 +136,13 @@ export default function TicketsPage() {
   async function handleDeleteType(typeId: string) {
     const { error } = await supabase.from('ticket_types').delete().eq('id', typeId)
     if (error) setError(error.message)
-    else { setDeleteConfirm(null); await fetchAll() }
+    else { setDeleteTypeConfirm(null); await fetchAll() }
   }
 
   async function handleDeleteSale(saleId: string) {
     const { error } = await supabase.from('ticket_sales').delete().eq('id', saleId)
     if (error) setError(error.message)
-    else await fetchAll()
+    else { setDeleteSaleConfirm(null); await fetchAll() }
   }
 
   const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0)
@@ -420,16 +422,16 @@ export default function TicketsPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      {deleteConfirm === type.id ? (
+                      {deleteTypeConfirm === type.id ? (
                         <div className="flex items-center gap-2">
                           <span className="text-xs" style={{ color: 'var(--muted)' }}>Delete?</span>
                           <button onClick={() => handleDeleteType(type.id)} className="text-xs px-2 py-1 rounded font-medium" style={{ background: 'var(--danger)', color: '#fff' }}>Yes</button>
-                          <button onClick={() => setDeleteConfirm(null)} className="text-xs px-2 py-1 rounded font-medium" style={{ background: 'var(--surface-2)', color: 'var(--muted)' }}>No</button>
+                          <button onClick={() => setDeleteTypeConfirm(null)} className="text-xs px-2 py-1 rounded font-medium" style={{ background: 'var(--surface-2)', color: 'var(--muted)' }}>No</button>
                         </div>
                       ) : (
                         <>
                           <button onClick={() => startEdit(type)} className="p-1.5 rounded hover:opacity-70" style={{ color: 'var(--muted)' }}><Pencil size={14} /></button>
-                          <button onClick={() => setDeleteConfirm(type.id)} className="p-1.5 rounded hover:opacity-70" style={{ color: 'var(--danger)' }}><Trash2 size={14} /></button>
+                          <button onClick={() => setDeleteTypeConfirm(type.id)} className="p-1.5 rounded hover:opacity-70" style={{ color: 'var(--danger)' }}><Trash2 size={14} /></button>
                         </>
                       )}
                     </div>
@@ -442,34 +444,60 @@ export default function TicketsPage() {
       )}
 
       {/* ── HISTORY ── */}
-      {ticketSales.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold mb-3" style={{ color: 'var(--muted)' }}>Sales History</h2>
-          <div className="rounded-xl overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-            {ticketSales.map((sale, i) => (
-              <div
-                key={sale.id}
-                className="flex items-center justify-between px-5 py-3"
-                style={{ borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}
+      {ticketSales.length > 0 && (() => {
+        const typeOptions = ['all', ...Array.from(new Set(ticketSales.map((s) => s.ticket_type)))]
+        const filtered = historyFilter === 'all' ? ticketSales : ticketSales.filter((s) => s.ticket_type === historyFilter)
+        return (
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Sales History</h2>
+              <select
+                value={historyFilter}
+                onChange={(e) => setHistoryFilter(e.target.value)}
+                className="px-3 py-1.5 rounded-lg text-sm outline-none"
+                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
               >
-                <div className="min-w-0">
-                  <div className="text-sm font-medium" style={{ color: 'var(--text)' }}>
-                    {sale.quantity}x {sale.ticket_type}
-                    {sale.price === 0 ? ' · Free' : ` · ${fmt.format(sale.price * sale.quantity)}`}
+                {typeOptions.map((t) => (
+                  <option key={t} value={t}>{t === 'all' ? 'All types' : t}</option>
+                ))}
+              </select>
+            </div>
+            <div className="rounded-xl overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              {filtered.map((sale, i) => (
+                <div
+                  key={sale.id}
+                  className="flex items-center justify-between px-5 py-3"
+                  style={{ borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}
+                >
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                      {sale.quantity}x {sale.ticket_type}
+                      {sale.price === 0 ? ' · Free' : ` · ${fmt.format(sale.price * sale.quantity)}`}
+                    </div>
+                    <div className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>
+                      {format(new Date(sale.created_at), 'MMM d, h:mm a')}
+                      {sale.notes && ` · ${sale.notes}`}
+                    </div>
                   </div>
-                  <div className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>
-                    {format(new Date(sale.created_at), 'MMM d, h:mm a')}
-                    {sale.notes && ` · ${sale.notes}`}
+                  <div className="flex items-center gap-2 ml-3 flex-shrink-0">
+                    {deleteSaleConfirm === sale.id ? (
+                      <>
+                        <span className="text-xs" style={{ color: 'var(--muted)' }}>Delete?</span>
+                        <button onClick={() => handleDeleteSale(sale.id)} className="text-xs px-2 py-1 rounded font-medium" style={{ background: 'var(--danger)', color: '#fff' }}>Yes</button>
+                        <button onClick={() => setDeleteSaleConfirm(null)} className="text-xs px-2 py-1 rounded font-medium" style={{ background: 'var(--surface-2)', color: 'var(--muted)' }}>No</button>
+                      </>
+                    ) : (
+                      <button onClick={() => setDeleteSaleConfirm(sale.id)} className="p-1.5 rounded hover:opacity-70" style={{ color: 'var(--danger)' }}>
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </div>
                 </div>
-                <button onClick={() => handleDeleteSale(sale.id)} className="p-1.5 rounded ml-3 flex-shrink-0 hover:opacity-70" style={{ color: 'var(--danger)' }}>
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )
+      })()}
     </div>
   )
 }
