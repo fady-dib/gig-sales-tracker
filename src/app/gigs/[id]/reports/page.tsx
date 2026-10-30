@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { Transaction, TransactionItem, TicketSale } from '@/lib/types'
 import StatCard from '@/components/StatCard'
 import { Download, DollarSign, ShoppingBag, Ticket, TrendingUp } from 'lucide-react'
@@ -39,6 +39,7 @@ interface CategoryStat {
 }
 
 export default function ReportsPage() {
+  const supabase = createClient()
   const { id } = useParams() as { id: string }
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [ticketSales, setTicketSales] = useState<TicketSale[]>([])

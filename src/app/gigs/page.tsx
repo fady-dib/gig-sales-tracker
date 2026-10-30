@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { Gig } from '@/lib/types'
 import { useRouter } from 'next/navigation'
-import { Plus, Music, MapPin, Calendar, X } from 'lucide-react'
+import { Plus, Music, MapPin, Calendar, X, LogOut } from 'lucide-react'
 import { format } from 'date-fns'
 
 export default function GigsPage() {
   const router = useRouter()
+  const supabase = createClient()
   const [gigs, setGigs] = useState<Gig[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -66,14 +67,28 @@ export default function GigsPage() {
               Manage your DJ gigs and track bar sales
             </p>
           </div>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all"
-            style={{ background: 'var(--accent)', color: '#fff' }}
-          >
-            <Plus size={16} />
-            New Gig
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all"
+              style={{ background: 'var(--accent)', color: '#fff' }}
+            >
+              <Plus size={16} />
+              New Gig
+            </button>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut()
+                router.push('/login')
+                router.refresh()
+              }}
+              className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-70"
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--muted)' }}
+            >
+              <LogOut size={15} />
+              Sign out
+            </button>
+          </div>
         </div>
 
         {/* New Gig Form */}

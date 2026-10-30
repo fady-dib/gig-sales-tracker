@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { Transaction, TransactionItem, TicketSale } from '@/lib/types'
 import StatCard from '@/components/StatCard'
 import { DollarSign, ShoppingBag, Ticket, TrendingUp, Receipt, Star } from 'lucide-react'
@@ -11,6 +11,7 @@ import { format } from 'date-fns'
 const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
 export default function DashboardPage() {
+  const supabase = createClient()
   const { id } = useParams() as { id: string }
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [ticketSales, setTicketSales] = useState<TicketSale[]>([])

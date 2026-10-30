@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { Product, PRODUCT_CATEGORIES } from '@/lib/types'
 import { Plus, Pencil, Trash2, X, Check } from 'lucide-react'
 
@@ -23,6 +23,7 @@ const defaultForm: ProductForm = {
 }
 
 export default function ProductsPage() {
+  const supabase = createClient()
   const { id } = useParams() as { id: string }
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)

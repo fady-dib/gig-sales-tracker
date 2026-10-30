@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { Product, ProductCategory, PRODUCT_CATEGORIES } from '@/lib/types'
 import ProductCard from '@/components/ProductCard'
 import OrderCart, { CartItem } from '@/components/OrderCart'
 
 export default function POSPage() {
+  const supabase = createClient()
   const { id } = useParams() as { id: string }
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)

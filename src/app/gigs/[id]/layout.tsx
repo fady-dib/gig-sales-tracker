@@ -1,17 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { useParams, useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase-browser'
 import { Gig } from '@/lib/types'
 import NavLink from '@/components/NavLink'
-import { Music, LayoutDashboard, ShoppingCart, Package, Ticket, History, BarChart2, ArrowLeft } from 'lucide-react'
+import { Music, LayoutDashboard, ShoppingCart, Package, Ticket, History, BarChart2, ArrowLeft, LogOut } from 'lucide-react'
 import Link from 'next/link'
 
 export default function GigLayout({ children }: { children: React.ReactNode }) {
   const params = useParams()
+  const router = useRouter()
   const id = params.id as string
   const [gig, setGig] = useState<Gig | null>(null)
+  const supabase = createClient()
 
   useEffect(() => {
     async function fetchGig() {
@@ -20,6 +22,12 @@ export default function GigLayout({ children }: { children: React.ReactNode }) {
     }
     fetchGig()
   }, [id])
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   const navItems = [
     { href: `/gigs/${id}`, label: 'Dashboard', icon: <LayoutDashboard size={16} /> },
@@ -63,13 +71,22 @@ export default function GigLayout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <nav className="flex flex-col gap-1">
+        <nav className="flex flex-col gap-1 flex-1">
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} icon={item.icon}>
               {item.label}
             </NavLink>
           ))}
         </nav>
+
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-opacity hover:opacity-70 w-full mt-2"
+          style={{ color: 'var(--muted)' }}
+        >
+          <LogOut size={14} />
+          Sign out
+        </button>
       </aside>
 
       {/* Main content */}

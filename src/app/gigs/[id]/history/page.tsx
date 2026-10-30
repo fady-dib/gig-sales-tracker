@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { Transaction, TransactionItem } from '@/lib/types'
 import { ChevronDown, ChevronRight, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
@@ -10,6 +10,7 @@ import { format } from 'date-fns'
 const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
 export default function HistoryPage() {
+  const supabase = createClient()
   const { id } = useParams() as { id: string }
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)

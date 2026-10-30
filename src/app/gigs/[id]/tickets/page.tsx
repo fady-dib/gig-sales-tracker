@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 import { TicketSale } from '@/lib/types'
 import { Trash2, Ticket } from 'lucide-react'
 import { format } from 'date-fns'
@@ -21,6 +21,7 @@ interface TicketForm {
 const defaultForm: TicketForm = { ticket_type: '', price: '', quantity: '1', notes: '' }
 
 export default function TicketsPage() {
+  const supabase = createClient()
   const { id } = useParams() as { id: string }
   const [tickets, setTickets] = useState<TicketSale[]>([])
   const [loading, setLoading] = useState(true)
