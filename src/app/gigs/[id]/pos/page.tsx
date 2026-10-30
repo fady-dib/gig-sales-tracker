@@ -117,7 +117,7 @@ export default function POSPage() {
           </div>
 
           {/* Products grid */}
-          <div className="flex-1 overflow-y-auto p-3 md:p-6 pb-24 md:pb-6">
+          <div className="flex-1 overflow-y-auto p-3 md:p-6 pb-24 lg:pb-6">
             {error && (
               <div className="mb-4 px-4 py-3 rounded-lg text-sm" style={{ background: 'var(--danger)22', color: 'var(--danger)' }}>
                 {error}
@@ -149,7 +149,7 @@ export default function POSPage() {
         </div>
 
         {/* Desktop cart sidebar */}
-        <div className="hidden md:block w-72 flex-shrink-0 p-4" style={{ borderLeft: '1px solid var(--border)' }}>
+        <div className="hidden lg:block w-72 flex-shrink-0 p-4" style={{ borderLeft: '1px solid var(--border)' }}>
           <OrderCart
             items={cart}
             onUpdateQty={updateQty}
@@ -163,7 +163,7 @@ export default function POSPage() {
 
       {/* Mobile sticky cart bar */}
       <div
-        className="md:hidden fixed bottom-0 left-0 right-0 z-30 px-4 py-3"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-30 px-4 py-3"
         style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)' }}
       >
         <button
@@ -184,7 +184,7 @@ export default function POSPage() {
 
       {/* Mobile cart bottom sheet */}
       {cartOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end">
+        <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
           <div className="flex-1 bg-black/60" onClick={() => setCartOpen(false)} />
           <div
             className="rounded-t-2xl flex flex-col"
