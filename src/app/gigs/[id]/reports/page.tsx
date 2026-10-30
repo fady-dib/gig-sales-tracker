@@ -45,6 +45,7 @@ export default function ReportsPage() {
   const [ticketSales, setTicketSales] = useState<TicketSale[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [productFilter, setProductFilter] = useState('')
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -309,8 +310,16 @@ export default function ReportsPage() {
             className="rounded-xl overflow-hidden"
             style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
           >
-            <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
-              <h2 className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Product Breakdown</h2>
+            <div className="px-5 py-4 flex items-center gap-4" style={{ borderBottom: '1px solid var(--border)' }}>
+              <h2 className="font-semibold text-sm flex-shrink-0" style={{ color: 'var(--text)' }}>Product Breakdown</h2>
+              <input
+                type="text"
+                value={productFilter}
+                onChange={(e) => setProductFilter(e.target.value)}
+                placeholder="Filter by name…"
+                className="ml-auto px-3 py-1.5 rounded-lg text-sm outline-none w-40 md:w-56"
+                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+              />
             </div>
             <table className="w-full text-sm">
               <thead>
@@ -329,8 +338,18 @@ export default function ReportsPage() {
                       No sales data yet
                     </td>
                   </tr>
-                ) : (
-                  productStats.map((p, i) => (
+                ) : (() => {
+                  const filtered = productFilter.trim()
+                    ? productStats.filter((p) => p.name.toLowerCase().includes(productFilter.toLowerCase()))
+                    : productStats
+                  if (filtered.length === 0) return (
+                    <tr>
+                      <td colSpan={3} className="px-5 py-8 text-center text-sm" style={{ color: 'var(--muted)' }}>
+                        No products match &ldquo;{productFilter}&rdquo;
+                      </td>
+                    </tr>
+                  )
+                  return filtered.map((p, i) => (
                     <tr
                       key={p.name}
                       style={{ borderTop: '1px solid var(--border)', background: i % 2 === 1 ? 'var(--surface-2)' : 'transparent' }}
@@ -342,7 +361,7 @@ export default function ReportsPage() {
                       </td>
                     </tr>
                   ))
-                )}
+                })()}
               </tbody>
             </table>
           </div>
