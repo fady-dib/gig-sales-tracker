@@ -12,14 +12,12 @@ interface ProductForm {
   name: string
   category: Product['category']
   price: string
-  cost_price: string
 }
 
 const defaultForm: ProductForm = {
   name: '',
   category: 'Beer',
   price: '',
-  cost_price: '',
 }
 
 export default function ProductsPage() {
@@ -56,7 +54,6 @@ export default function ProductsPage() {
       name: product.name,
       category: product.category,
       price: product.price.toString(),
-      cost_price: product.cost_price?.toString() ?? '',
     })
     setShowForm(false)
   }
@@ -76,7 +73,6 @@ export default function ProductsPage() {
       name: form.name.trim(),
       category: form.category,
       price: parseFloat(form.price),
-      cost_price: form.cost_price ? parseFloat(form.cost_price) : null,
     }
 
     if (editingId) {
@@ -143,7 +139,7 @@ export default function ProductsPage() {
               <X size={18} />
             </button>
           </div>
-          <form onSubmit={handleSave} className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <form onSubmit={handleSave} className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium" style={{ color: 'var(--muted)' }}>Name *</label>
               <input
@@ -181,20 +177,7 @@ export default function ProductsPage() {
                 style={inputStyle}
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium" style={{ color: 'var(--muted)' }}>Cost Price</label>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={form.cost_price}
-                onChange={(e) => setForm({ ...form, cost_price: e.target.value })}
-                placeholder="0.00"
-                className="px-3 py-2 rounded-lg text-sm outline-none"
-                style={inputStyle}
-              />
-            </div>
-            <div className="col-span-2 sm:col-span-4 flex gap-3 justify-end">
+            <div className="col-span-2 sm:col-span-3 flex gap-3 justify-end">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
@@ -221,7 +204,7 @@ export default function ProductsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
-              {['Name', 'Category', 'Price', 'Cost', 'Actions'].map((h) => (
+              {['Name', 'Category', 'Price', 'Actions'].map((h) => (
                 <th
                   key={h}
                   className="px-5 py-3 text-left text-xs font-semibold"
@@ -281,16 +264,6 @@ export default function ProductsPage() {
                           style={inputStyle}
                           placeholder="Price"
                         />
-                        <input
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          value={form.cost_price}
-                          onChange={(e) => setForm({ ...form, cost_price: e.target.value })}
-                          className="px-3 py-1.5 rounded-lg text-sm outline-none w-24"
-                          style={inputStyle}
-                          placeholder="Cost"
-                        />
                         <div className="flex gap-2">
                           <button
                             type="submit"
@@ -328,9 +301,6 @@ export default function ProductsPage() {
                     </td>
                     <td className="px-5 py-3 font-medium" style={{ color: 'var(--accent)' }}>
                       {fmt.format(product.price)}
-                    </td>
-                    <td className="px-5 py-3" style={{ color: 'var(--muted)' }}>
-                      {product.cost_price != null ? fmt.format(product.cost_price) : '—'}
                     </td>
                     <td className="px-5 py-3">
                       {deleteConfirm === product.id ? (

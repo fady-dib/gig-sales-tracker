@@ -13,7 +13,6 @@ export interface Product {
   name: string
   category: 'Beer' | 'Cocktails' | 'Spirits' | 'Wine' | 'Soft Drinks' | 'Water' | 'Other'
   price: number
-  cost_price?: number
   created_at: string
 }
 
