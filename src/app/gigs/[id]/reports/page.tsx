@@ -184,12 +184,12 @@ export default function ReportsPage() {
       {loading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-28 rounded-xl skeleton" />
+            <div key={i} className="h-28 skeleton" />
           ))}
         </div>
       ) : (
-        <>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="anim-slide-up">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 stagger">
             <StatCard
               title="Total Revenue"
               value={fmt.format(totalRevenue)}
@@ -365,7 +365,7 @@ export default function ReportsPage() {
               </tbody>
             </table>
           </div>
-        </>
+        </div>
       )}
     </div>
   )

@@ -50,18 +50,29 @@ export default function GigLayout({ children }: { children: React.ReactNode }) {
       {/* ── Desktop Sidebar ── */}
       <aside
         className="hidden md:flex w-56 flex-shrink-0 flex-col p-4 sticky top-0 h-screen"
-        style={{ background: 'var(--surface)', borderRight: '1px solid var(--border)' }}
+        style={{
+          background: 'linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%)',
+          borderRight: '1px solid var(--border)',
+        }}
       >
         <Link
           href="/gigs"
-          className="flex items-center gap-2 mb-5 px-1 py-1 text-xs font-medium transition-opacity hover:opacity-70"
+          className="flex items-center gap-2 mb-5 px-2 py-1.5 rounded-lg text-xs font-medium transition-all"
           style={{ color: 'var(--muted)' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--surface-2)'; (e.currentTarget as HTMLElement).style.color = 'var(--text)' }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--muted)' }}
         >
           <ArrowLeft size={14} />
           All Gigs
         </Link>
 
-        <div className="flex items-center gap-3 px-3 py-3 rounded-xl mb-6" style={{ background: 'var(--surface-2)' }}>
+        <div
+          className="flex items-center gap-3 px-3 py-3 rounded-xl mb-6"
+          style={{
+            background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, var(--surface-2) 100%)',
+            border: '1px solid rgba(99,102,241,0.2)',
+          }}
+        >
           <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--accent)' }}>
             <Music size={16} color="#fff" />
           </div>

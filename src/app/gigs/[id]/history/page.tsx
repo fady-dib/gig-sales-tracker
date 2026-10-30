@@ -88,11 +88,11 @@ export default function HistoryPage() {
           ))}
         </div>
       ) : transactions.length === 0 ? (
-        <div className="flex items-center justify-center py-24 text-sm" style={{ color: 'var(--muted)' }}>
+        <div className="flex items-center justify-center py-24 text-sm anim-fade-in" style={{ color: 'var(--muted)' }}>
           No transactions yet.
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 anim-slide-up">
           {transactions.map((txn) => {
             const total = txn.items.reduce((s, i) => s + i.unit_price * i.quantity, 0)
             const summary = txn.items
@@ -103,12 +103,17 @@ export default function HistoryPage() {
             return (
               <div
                 key={txn.id}
-                className="rounded-xl overflow-hidden"
+                className="rounded-xl overflow-hidden transition-all duration-150"
                 style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(99,102,241,0.3)' }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)' }}
               >
                 <div
-                  className="flex items-center gap-3 px-5 py-4 cursor-pointer"
+                  className="flex items-center gap-3 px-5 py-4 cursor-pointer transition-colors"
                   onClick={() => toggleExpand(txn.id)}
+                  style={{ background: 'transparent' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--surface-2)' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
                 >
                   <button className="flex-shrink-0" style={{ color: 'var(--muted)' }}>
                     {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}

@@ -233,7 +233,7 @@ export default function GigsPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger">
             {gigs.map((gig) => {
               const isNavigating = navigatingId === gig.id
               return (
@@ -241,25 +241,41 @@ export default function GigsPage() {
                   key={gig.id}
                   onClick={() => { setNavigatingId(gig.id); router.push(`/gigs/${gig.id}`) }}
                   disabled={navigatingId !== null}
-                  className="rounded-xl p-5 text-left transition-all hover:scale-[1.02] active:scale-[0.98] relative"
+                  className="rounded-xl p-5 text-left anim-slide-up relative group"
                   style={{
-                    background: 'var(--surface)',
-                    border: `1px solid ${isNavigating ? 'var(--accent)' : 'var(--border)'}`,
-                    opacity: navigatingId !== null && !isNavigating ? 0.5 : 1,
+                    background: isNavigating ? 'var(--surface-2)' : 'var(--surface)',
+                    border: `1px solid ${isNavigating ? 'rgba(99,102,241,0.5)' : 'var(--border)'}`,
+                    opacity: navigatingId !== null && !isNavigating ? 0.4 : 1,
+                    transition: 'all 0.2s ease',
+                    boxShadow: isNavigating ? '0 0 24px rgba(99,102,241,0.18)' : 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (navigatingId) return
+                    const el = e.currentTarget as HTMLElement
+                    el.style.borderColor = 'rgba(99,102,241,0.4)'
+                    el.style.boxShadow = '0 0 24px rgba(99,102,241,0.12), 0 8px 32px rgba(0,0,0,0.4)'
+                    el.style.transform = 'translateY(-3px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    if (navigatingId) return
+                    const el = e.currentTarget as HTMLElement
+                    el.style.borderColor = 'var(--border)'
+                    el.style.boxShadow = 'none'
+                    el.style.transform = ''
                   }}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: 'var(--accent)' + '22' }}
+                      style={{ background: 'rgba(99,102,241,0.15)' }}
                     >
                       <Music size={18} style={{ color: 'var(--accent)' }} />
                     </div>
-                    {isNavigating && (
-                      <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
-                    )}
+                    {isNavigating ? (
+                      <div className="w-5 h-5 rounded-full border-2 animate-spin" style={{ borderColor: 'rgba(99,102,241,0.3)', borderTopColor: 'var(--accent)' }} />
+                    ) : null}
                   </div>
-                  <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text)' }}>
+                  <h3 className="font-bold text-base mb-2.5" style={{ color: 'var(--text)' }}>
                     {gig.name}
                   </h3>
                   <div className="flex items-center gap-1.5 mb-1.5">
@@ -275,10 +291,7 @@ export default function GigsPage() {
                     </span>
                   </div>
                   {gig.notes && (
-                    <p
-                      className="text-xs mt-3 leading-relaxed line-clamp-2"
-                      style={{ color: 'var(--muted)' }}
-                    >
+                    <p className="text-xs mt-3 leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
                       {gig.notes}
                     </p>
                   )}

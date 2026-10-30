@@ -88,11 +88,11 @@ export default function DashboardPage() {
       {loading ? (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-28 rounded-xl skeleton" />
+            <div key={i} className="h-28 skeleton" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8 stagger">
           <StatCard
             title="Total Revenue"
             value={fmt.format(totalRevenue)}

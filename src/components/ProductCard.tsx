@@ -31,8 +31,18 @@ export default function ProductCard({ product, onAdd }: ProductCardProps) {
         background: 'var(--surface)',
         border: '1px solid var(--border)',
       }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 1px var(--accent)33' }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement
+        el.style.borderColor = 'rgba(99,102,241,0.5)'
+        el.style.boxShadow = '0 0 20px rgba(99,102,241,0.15), 0 8px 24px rgba(0,0,0,0.3)'
+        el.style.background = 'var(--surface-2)'
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement
+        el.style.borderColor = 'var(--border)'
+        el.style.boxShadow = 'none'
+        el.style.background = 'var(--surface)'
+      }}
     >
       <div className="flex items-start justify-between gap-2">
         <span
