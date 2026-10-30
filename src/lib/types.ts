@@ -32,6 +32,14 @@ export interface TransactionItem {
   quantity: number
 }
 
+export interface TicketType {
+  id: string
+  gig_id: string
+  name: string
+  price: number
+  created_at: string
+}
+
 export interface TicketSale {
   id: string
   gig_id: string
