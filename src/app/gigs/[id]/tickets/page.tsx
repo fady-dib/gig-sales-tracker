@@ -447,6 +447,8 @@ export default function TicketsPage() {
       {ticketSales.length > 0 && (() => {
         const typeOptions = ['all', ...Array.from(new Set(ticketSales.map((s) => s.ticket_type)))]
         const filtered = historyFilter === 'all' ? ticketSales : ticketSales.filter((s) => s.ticket_type === historyFilter)
+        const filteredQty = filtered.reduce((s, t) => s + t.quantity, 0)
+        const filteredRevenue = filtered.reduce((s, t) => s + t.price * t.quantity, 0)
         return (
           <div className="mt-8">
             <div className="flex items-center justify-between mb-3">
@@ -494,6 +496,18 @@ export default function TicketsPage() {
                   </div>
                 </div>
               ))}
+              {/* Totals row */}
+              <div
+                className="flex items-center justify-between px-5 py-3"
+                style={{ borderTop: '1px solid var(--border)', background: 'var(--surface-2)' }}
+              >
+                <span className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>
+                  Total · {filteredQty} ticket{filteredQty !== 1 ? 's' : ''}
+                </span>
+                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>
+                  {fmt.format(filteredRevenue)}
+                </span>
+              </div>
             </div>
           </div>
         )
