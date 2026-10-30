@@ -84,7 +84,7 @@ export default function HistoryPage() {
       {loading ? (
         <div className="space-y-3">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: 'var(--surface)' }} />
+            <div key={i} className="h-16 rounded-xl skeleton" />
           ))}
         </div>
       ) : transactions.length === 0 ? (

@@ -17,6 +17,7 @@ export default function GigLayout({ children }: { children: React.ReactNode }) {
   const id = params.id as string
   const [gig, setGig] = useState<Gig | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function GigLayout({ children }: { children: React.ReactNode }) {
   }, [id])
 
   async function handleLogout() {
+    setSigningOut(true)
     await supabase.auth.signOut()
     router.push('/login')
     router.refresh()
@@ -77,11 +79,12 @@ export default function GigLayout({ children }: { children: React.ReactNode }) {
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-opacity hover:opacity-70 w-full mt-2"
+          disabled={signingOut}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-opacity hover:opacity-70 w-full mt-2 disabled:opacity-50"
           style={{ color: 'var(--muted)' }}
         >
-          <LogOut size={14} />
-          Sign out
+          <LogOut size={14} className={signingOut ? 'animate-spin' : ''} />
+          {signingOut ? 'Signing out…' : 'Sign out'}
         </button>
       </aside>
 

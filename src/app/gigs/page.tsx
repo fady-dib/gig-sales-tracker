@@ -15,6 +15,8 @@ export default function GigsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
+  const [navigatingId, setNavigatingId] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', venue: '', date: '', notes: '' })
 
   async function fetchGigs() {
@@ -78,15 +80,17 @@ export default function GigsPage() {
             </button>
             <button
               onClick={async () => {
+                setSigningOut(true)
                 await supabase.auth.signOut()
                 router.push('/login')
                 router.refresh()
               }}
-              className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-70"
+              disabled={signingOut}
+              className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-70 disabled:opacity-50"
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--muted)' }}
             >
-              <LogOut size={15} />
-              Sign out
+              <LogOut size={15} className={signingOut ? 'animate-spin' : ''} />
+              {signingOut ? 'Signing out…' : 'Sign out'}
             </button>
           </div>
         </div>
@@ -212,8 +216,7 @@ export default function GigsPage() {
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className="h-36 rounded-xl animate-pulse"
-                style={{ background: 'var(--surface)' }}
+                className="h-36 skeleton"
               />
             ))}
           </div>
@@ -231,47 +234,57 @@ export default function GigsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {gigs.map((gig) => (
-              <button
-                key={gig.id}
-                onClick={() => router.push(`/gigs/${gig.id}`)}
-                className="rounded-xl p-5 text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-                style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                }}
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: 'var(--accent)' + '22' }}
+            {gigs.map((gig) => {
+              const isNavigating = navigatingId === gig.id
+              return (
+                <button
+                  key={gig.id}
+                  onClick={() => { setNavigatingId(gig.id); router.push(`/gigs/${gig.id}`) }}
+                  disabled={navigatingId !== null}
+                  className="rounded-xl p-5 text-left transition-all hover:scale-[1.02] active:scale-[0.98] relative"
+                  style={{
+                    background: 'var(--surface)',
+                    border: `1px solid ${isNavigating ? 'var(--accent)' : 'var(--border)'}`,
+                    opacity: navigatingId !== null && !isNavigating ? 0.5 : 1,
+                  }}
                 >
-                  <Music size={18} style={{ color: 'var(--accent)' }} />
-                </div>
-                <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text)' }}>
-                  {gig.name}
-                </h3>
-                <div className="flex items-center gap-1.5 mb-1.5">
-                  <MapPin size={12} style={{ color: 'var(--muted)' }} />
-                  <span className="text-xs" style={{ color: 'var(--muted)' }}>
-                    {gig.venue}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Calendar size={12} style={{ color: 'var(--muted)' }} />
-                  <span className="text-xs" style={{ color: 'var(--muted)' }}>
-                    {format(new Date(gig.date + 'T00:00:00'), 'MMM d, yyyy')}
-                  </span>
-                </div>
-                {gig.notes && (
-                  <p
-                    className="text-xs mt-3 leading-relaxed line-clamp-2"
-                    style={{ color: 'var(--muted)' }}
-                  >
-                    {gig.notes}
-                  </p>
-                )}
-              </button>
-            ))}
+                  <div className="flex items-start justify-between mb-4">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ background: 'var(--accent)' + '22' }}
+                    >
+                      <Music size={18} style={{ color: 'var(--accent)' }} />
+                    </div>
+                    {isNavigating && (
+                      <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
+                    )}
+                  </div>
+                  <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text)' }}>
+                    {gig.name}
+                  </h3>
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <MapPin size={12} style={{ color: 'var(--muted)' }} />
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                      {gig.venue}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Calendar size={12} style={{ color: 'var(--muted)' }} />
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                      {format(new Date(gig.date + 'T00:00:00'), 'MMM d, yyyy')}
+                    </span>
+                  </div>
+                  {gig.notes && (
+                    <p
+                      className="text-xs mt-3 leading-relaxed line-clamp-2"
+                      style={{ color: 'var(--muted)' }}
+                    >
+                      {gig.notes}
+                    </p>
+                  )}
+                </button>
+              )
+            })}
           </div>
         )}
       </div>

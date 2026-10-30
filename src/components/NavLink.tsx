@@ -21,6 +21,8 @@ export default function NavLink({ href, children, icon }: NavLinkProps) {
         background: isActive ? 'var(--accent)' : 'transparent',
         color: isActive ? '#fff' : 'var(--muted)',
       }}
+      onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'var(--surface-2)' }}
+      onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent' }}
     >
       {icon && <span className="w-4 h-4 flex-shrink-0">{icon}</span>}
       {children}

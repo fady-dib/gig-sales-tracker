@@ -184,7 +184,7 @@ export default function ReportsPage() {
       {loading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-28 rounded-xl animate-pulse" style={{ background: 'var(--surface)' }} />
+            <div key={i} className="h-28 rounded-xl skeleton" />
           ))}
         </div>
       ) : (

@@ -31,6 +31,8 @@ export default function ProductCard({ product, onAdd }: ProductCardProps) {
         background: 'var(--surface)',
         border: '1px solid var(--border)',
       }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 1px var(--accent)33' }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
     >
       <div className="flex items-start justify-between gap-2">
         <span

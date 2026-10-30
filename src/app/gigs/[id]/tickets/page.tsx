@@ -196,7 +196,7 @@ export default function TicketsPage() {
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-20 rounded-xl animate-pulse" style={{ background: 'var(--surface)' }} />
+                  <div key={i} className="h-20 rounded-xl skeleton" />
                 ))}
               </div>
             ) : ticketTypes.length === 0 ? (
@@ -384,7 +384,7 @@ export default function TicketsPage() {
           {/* Types list */}
           {loading ? (
             <div className="space-y-2">
-              {[...Array(3)].map((_, i) => <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: 'var(--surface)' }} />)}
+              {[...Array(3)].map((_, i) => <div key={i} className="h-14 rounded-xl skeleton" style={{ background: 'var(--surface)' }} />)}
             </div>
           ) : ticketTypes.length === 0 ? (
             <div className="py-16 text-center text-sm" style={{ color: 'var(--muted)' }}>No ticket types yet.</div>

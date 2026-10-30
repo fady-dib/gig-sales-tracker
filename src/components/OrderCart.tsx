@@ -89,7 +89,7 @@ export default function OrderCart({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => onUpdateQty(item.productId, -1)}
-                    className="w-6 h-6 rounded-full flex items-center justify-center transition-colors"
+                    className="w-6 h-6 rounded-full flex items-center justify-center transition-all hover:opacity-80 active:scale-90"
                     style={{ background: 'var(--border)', color: 'var(--text)' }}
                   >
                     <Minus size={12} />
@@ -99,7 +99,7 @@ export default function OrderCart({
                   </span>
                   <button
                     onClick={() => onUpdateQty(item.productId, 1)}
-                    className="w-6 h-6 rounded-full flex items-center justify-center transition-colors"
+                    className="w-6 h-6 rounded-full flex items-center justify-center transition-all hover:opacity-80 active:scale-90"
                     style={{ background: 'var(--accent)', color: '#fff' }}
                   >
                     <Plus size={12} />
@@ -134,7 +134,7 @@ export default function OrderCart({
         <button
           onClick={onCheckout}
           disabled={items.length === 0 || loading}
-          className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 active:scale-[0.98]"
           style={{
             background: items.length > 0 && !loading ? 'var(--accent)' : 'var(--surface-2)',
             color: '#fff',

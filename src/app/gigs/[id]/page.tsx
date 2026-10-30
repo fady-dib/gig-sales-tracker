@@ -88,7 +88,7 @@ export default function DashboardPage() {
       {loading ? (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-28 rounded-xl animate-pulse" style={{ background: 'var(--surface)' }} />
+            <div key={i} className="h-28 rounded-xl skeleton" />
           ))}
         </div>
       ) : (
@@ -137,7 +137,7 @@ export default function DashboardPage() {
         {loading ? (
           <div className="p-5 space-y-3">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-12 rounded-lg animate-pulse" style={{ background: 'var(--surface-2)' }} />
+              <div key={i} className="h-12 rounded-lg skeleton" style={{ background: 'var(--surface-2)' }} />
             ))}
           </div>
         ) : recentTxns.length === 0 ? (

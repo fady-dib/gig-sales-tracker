@@ -131,7 +131,7 @@ export default function POSPage() {
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-24 md:h-28 rounded-xl animate-pulse" style={{ background: 'var(--surface)' }} />
+                  <div key={i} className="h-24 md:h-28 rounded-xl skeleton" />
                 ))}
               </div>
             ) : filteredProducts.length === 0 ? (
