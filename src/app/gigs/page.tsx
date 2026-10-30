@@ -114,7 +114,7 @@ export default function GigsPage() {
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="e.g. Friday Night Vibes"
+                  placeholder=""
                   required
                   className="px-3 py-2.5 rounded-lg text-sm outline-none"
                   style={{
@@ -132,7 +132,7 @@ export default function GigsPage() {
                   type="text"
                   value={form.venue}
                   onChange={(e) => setForm({ ...form, venue: e.target.value })}
-                  placeholder="e.g. Club Neon"
+                  placeholder=""
                   required
                   className="px-3 py-2.5 rounded-lg text-sm outline-none"
                   style={{
